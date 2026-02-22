@@ -24,7 +24,7 @@ export function CreateBond() {
 
     const amountNum = parseFloat(amount);
     if (isNaN(amountNum) || amountNum < 0.01 || amountNum > 8) {
-      setMessage("Amount must be between 0.01 and 8 MON.");
+      setMessage("Amount must be between 0.01 and 1 MON.");
       return;
     }
 
