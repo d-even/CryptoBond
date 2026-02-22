@@ -9,10 +9,12 @@ interface Web3ContextType {
   signer: Signer | null;
   account: string | null;
   balance: string | null;
+  network: string | null;
   contract: Contract | null;
   isLoading: boolean;
   error: string | null;
   connectWallet: () => Promise<void>;
+  disconnectWallet: () => void;
   createBond: (keyId: string, password: string, amount: string) => Promise<any>;
   redeemBond: (keyId: string, password: string) => Promise<any>;
 }
@@ -38,6 +40,7 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
   const [signer, setSigner] = useState<Signer | null>(null);
   const [account, setAccount] = useState<string | null>(null);
   const [balance, setBalance] = useState<string | null>(null);
+  const [network, setNetwork] = useState<string | null>(null);
   const [contract, setContract] = useState<Contract | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -85,9 +88,9 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
       await browserProvider.send("eth_requestAccounts", []);
 
       const signer = await browserProvider.getSigner();
-      const network = await browserProvider.getNetwork();
+      const networkInfo = await browserProvider.getNetwork();
 
-      if (Number(network.chainId) !== MONAD_CHAIN_ID) {
+      if (Number(networkInfo.chainId) !== MONAD_CHAIN_ID) {
         setError("Please switch MetaMask to Monad Testnet (Chain ID 10143)");
         return;
       }
@@ -105,6 +108,7 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
       setSigner(signer);
       setAccount(address);
       setBalance(ethers.formatEther(balance));
+      setNetwork(networkInfo.name || 'Monad Testnet');
       setContract(contractInstance);
       setError(null);
     } catch (err: any) {
@@ -182,6 +186,16 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const disconnectWallet = () => {
+    setProvider(null);
+    setSigner(null);
+    setAccount(null);
+    setBalance(null);
+    setNetwork(null);
+    setContract(null);
+    setError(null);
+  };
+
   return (
     <Web3Context.Provider
       value={{
@@ -189,10 +203,12 @@ export const Web3Provider = ({ children }: { children: ReactNode }) => {
         signer,
         account,
         balance,
+        network,
         contract,
         isLoading,
         error,
         connectWallet,
+        disconnectWallet,
         createBond,
         redeemBond,
       }}
