@@ -11,7 +11,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <header className="w-full max-w-5xl px-4 py-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Crypto Bond</h1>
+          <h1 className="text-2xl font-bold text-white">BlitzzBond</h1>
           <WalletConnect />
         </div>
       </header>
