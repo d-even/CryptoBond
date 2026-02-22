@@ -15,7 +15,7 @@ contract Bond {
     event BondRedeemed(bytes32 indexed keyId, address indexed redeemer);
 
     function createBond(bytes32 keyId, bytes32 passwordHash) public payable {
-        require(msg.value >= 0.01 ether && msg.value <= 1 ether, "Bond amount must be between 0.01 and 1 MON");
+        require(msg.value >= 0.01 ether && msg.value <= 8 ether, "Bond amount must be between 0.01 and 8 MON");
         require(bonds[keyId].creator == address(0), "Bond with this Key ID already exists");
 
         bonds[keyId] = BondData({

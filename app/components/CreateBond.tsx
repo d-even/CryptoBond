@@ -22,6 +22,12 @@ export function CreateBond() {
       return;
     }
 
+    const amountNum = parseFloat(amount);
+    if (isNaN(amountNum) || amountNum < 0.01 || amountNum > 8) {
+      setMessage("Amount must be between 0.01 and 8 MON.");
+      return;
+    }
+
     setLoading(true);
     setMessage("");
 
@@ -49,6 +55,7 @@ export function CreateBond() {
       await tx.wait();
 
       setMessage("Bond created successfully!");
+      alert("Bond created successfully!");
       setKeyId("");
       setPassword("");
       setAmount("");
@@ -86,7 +93,7 @@ export function CreateBond() {
         />
         <input
           type="text"
-          placeholder="Amount (in MON)"
+          placeholder="Amount (0.01-8 MON)"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           className="w-full rounded-md border border-zinc-300 bg-zinc-50 px-4 py-2 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-700 dark:text-white"

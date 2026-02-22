@@ -32,6 +32,7 @@ export function RedeemBond() {
       await tx.wait();
 
       setMessage("Bond redeemed successfully!");
+      alert("Bond redeemed successfully!");
       setKeyId("");
       setPassword("");
     } catch (error: any) {
